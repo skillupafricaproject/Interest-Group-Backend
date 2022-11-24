@@ -16,7 +16,7 @@ const sendEmail = async options =>{
     //define the email options
     const mailOptions = {
         from: 'Noreply <hello@gmail.com>',
-        to: options.to,
+        to: options.email,
         subject: options.subject,
         text: options.message
 
@@ -25,7 +25,7 @@ const sendEmail = async options =>{
 
     // Actually send the email
     await transporter.sendMail(mailOptions);
-    return true
+    //return true
 }
 
 module.exports = sendEmail;
