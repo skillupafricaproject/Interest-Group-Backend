@@ -17,7 +17,7 @@ exports.updateMe = asyncErrors(async (req, res, next) => {
     }
 
     //filtered out unwanted fields not allowed to get updated
-    const filteredBody =filterObj(req.body, 'name', 'email');
+    const filteredBody =filterObj(req.body, 'first_name', 'birthday', 'birthmonth', 'birthyear', 'gender', 'url', 'about');
 
 
     //update user document

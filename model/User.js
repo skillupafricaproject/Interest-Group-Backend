@@ -5,9 +5,29 @@ const crypto = require('crypto')
 
 
 const userSchema = new mongoose.Schema({
-    name: {
+    userName: {
         type: String,
         required: [true, 'please provide a name']
+    },
+    fullName:{
+        type: String,
+        default: '',
+    },
+    dob_day:{
+        type: Number,
+        default: '',
+    },
+    dob_month:{
+        type: Number,
+        default: '',
+    },
+    gender: {
+        type: String,
+        default: ''
+    },
+    dob_year:{
+        type: Number,
+        default: '',
     },
     email: {
         type: String,
@@ -40,6 +60,10 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: true,
         select: false
+    }, 
+    about: {
+        type: String,
+        default: '',
     }
 },{
     timestamps: true
