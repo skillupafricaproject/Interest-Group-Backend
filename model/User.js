@@ -24,10 +24,10 @@ const userSchema = new mongoose.Schema({
         maxlength: 20,
         select: false
     }, 
-    confirmPassword: {
-        type: String,
-        required: [true, 'please confirm your password']
-    },
+    // confirmPassword: {
+    //     type: String,
+    //     required: [true, 'please confirm your password']
+    // },
     verified: {
         type: Boolean,
         default: false,
@@ -41,6 +41,8 @@ const userSchema = new mongoose.Schema({
         default: true,
         select: false
     }
+},{
+    timestamps: true
 })
 
 //encrypt the password by using a mongoose middleware(presave middleware)

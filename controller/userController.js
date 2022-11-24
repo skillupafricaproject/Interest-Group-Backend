@@ -34,6 +34,18 @@ exports.updateMe = asyncErrors(async (req, res, next) => {
     })
 })
 
+exports.getUser = asyncErrors(async(req, res, next) =>{
+    const user = await User.findOne({id: req.params.id}).select("-password");
+    if(!user) return res.status(400).json({ msg: "user does not exist"})
+
+    res.status(200).json({
+        status: 'success',
+        data:
+        user
+    })
+
+})
+
 exports.deleteMe = asyncErrors(async(req, res, next) => {
     await User.findByIdAndUpdate(req.user.id, { active: false});
     res.status(204).json({

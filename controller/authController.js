@@ -8,7 +8,6 @@ const {isValidObjectId} = require('mongoose')
 const asyncErrors = require('./errorController')
 const crypto = require('crypto')
 
-//this function is the token function
 const signToken = id => {
     return jwt.sign({ id }, process.env.JWT_SECRET, {
         expiresIn: process.env.JWT_EXPIRESIN
@@ -21,8 +20,9 @@ exports.signup = asyncErrors(async (req, res, next) => {
             name: req.body.name,
             email: req.body.email,
             password: req.body.password,
-            confirmPassword: req.body.confirmPassword
+            // confirmPassword: req.body.confirmPassword
         })
+        // const userId = User._id
         // const token = signToken(newUser._id)
         //jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
         //     expiresIn: process.env.JWT_EXPIRESIN
@@ -90,6 +90,9 @@ exports.login = asyncErrors(async(req, res, next) =>{
         if(!user || !(await user.comparePassword(password, user.password))){
             return next(res.status(401).json('incorrect email or password'))
         }
+        // if(user.verified === false){
+        //     return next(res.status(400).json({msg: 'please verify your email'}))
+        // }
         
         // console.log(req.body)
         
@@ -142,7 +145,7 @@ exports.verifyEmail = asyncErrors(async(req, res, next) => {
         html: plainEmailTemp("Email Verified Successfully", "Thanks for connecting with us")
     });
 
-    res.json({success: true, message: "email is successfully verified.", user:{ name:
+    res.status(200).json({success: true, data: {message: "email is successfully verified."}, user:{ name:
     user.name, email: user.email, id: user._id}})
 
 })
@@ -159,8 +162,8 @@ exports.forgotPassword = asyncErrors(async (req, res, next) => {
     console.log(resetToken)
 
     //send email
-    const resetURL = `${req.protocol}://localhost:3030/api/v1/job/resetPassword/${resetToken}`
-
+    const resetURL = `${req.protocol}://${req.get('host')}/api/v1/job/resetPassword/${resetToken}`
+    //${req.get('host')}
     const message = `forgot your password? submit a patch request with your new password and password confirm to: ${resetURL}.\nif
     you didn\'t forget your password, please ignore this email`;
 
