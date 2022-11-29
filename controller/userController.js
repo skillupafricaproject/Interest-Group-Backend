@@ -11,19 +11,20 @@ const filterObj = (obj, ...allowedFields) => {
 
 exports.updateMe = asyncErrors(async (req, res, next) => {
     //create error if user Posts password data
-    if(req.body.password || req.body.confirmPassword) {
+    if(req.body.password) {
         return next(res.status(400)
         .json({message: 'you cannot update your password here. please use the forget password route'}))
     }
 
     //filtered out unwanted fields not allowed to get updated
-    const filteredBody =filterObj(req.body, 'first_name', 'birthday', 'birthmonth', 'birthyear', 'gender', 'url', 'about');
+    // const filteredBody =filterObj(req.body)
+    const filteredBody =filterObj(req.body, 'firstName', 'lastName', 'birthdate', 'state', 'gender', 'photo', 'aboutMe');
 
 
-    //update user document
-    const updatedUser = await User.findByIdAndUpdate(req.user._id, filteredBody, 
+    // update user document
+    const updatedUser = await User.findByIdAndUpdate(req.user.id, filteredBody, 
+    // const updatedUser = await User.findByIdAndUpdate(req.body, 
         {new: true, runValidators: true,})
-
 
     res.status(200).json({
         status:'success',
