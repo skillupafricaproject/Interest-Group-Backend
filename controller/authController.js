@@ -16,6 +16,7 @@ const signToken = id => {
 
 
 exports.signup = asyncErrors(async (req, res, next) => {
+     const { email } = req.body
         const newUser = new User ({
             userName: req.body.userName,
             email: req.body.email,
