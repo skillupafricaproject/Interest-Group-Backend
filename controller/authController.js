@@ -27,6 +27,10 @@ exports.signup = asyncErrors(async (req, res, next) => {
         //jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
         //     expiresIn: process.env.JWT_EXPIRESIN
         // })
+        const emailExist = await User.findOne({email})
+        if(emailExist){
+            return next(res.status(404).json({ msg:'email already exists'}))
+        }
 
         const OTP = genOTP()
         const verificationToken = new VerificationToken({
@@ -163,7 +167,7 @@ exports.forgotPassword = asyncErrors(async (req, res, next) => {
     console.log(resetToken)
 
     //send email
-    const resetURL = `${req.protocol}://${req.get('host')}/api/v1/job/resetPassword/${resetToken}`
+    const resetURL = `${req.protocol}://${req.get('host')}/api/v1/meet/resetPassword/${resetToken}`
     //${req.get('host')}
     const message = `forgot your password? submit a patch request with your new password and password confirm to: ${resetURL}.\nif
     you didn\'t forget your password, please ignore this email`;
