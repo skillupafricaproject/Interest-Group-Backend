@@ -16,7 +16,7 @@ const signToken = id => {
 
 
 exports.signup = asyncErrors(async (req, res, next) => {
-     const { email } = req.body
+     const { email, userName } = req.body
         const newUser = new User ({
             userName: req.body.userName,
             email: req.body.email,
@@ -31,6 +31,10 @@ exports.signup = asyncErrors(async (req, res, next) => {
         const emailExist = await User.findOne({email})
         if(emailExist){
             return next(res.status(404).json({ msg:'email already exists'}))
+        }
+        const userExist = await User.findOne({userName})
+        if(userExist){
+            return next(res.status(404).json({ msg:'user name already exists'}))
         }
 
         const OTP = genOTP()
