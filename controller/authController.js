@@ -6,6 +6,7 @@ const {genOTP, emailTemplate, plainEmailTemp} = require('../util/mail')
 const mailTransport = require('../util/joEmail')
 const {isValidObjectId} = require('mongoose')
 const asyncErrors = require('./errorController')
+// const axios = require('axios')
 const crypto = require('crypto')
 
 const signToken = id => {
@@ -45,7 +46,24 @@ exports.signup = asyncErrors(async (req, res, next) => {
         await verificationToken.save()
         await newUser.save()
 
-        console.log(OTP)
+        // var config = {
+        //     method: 'post',
+        //     url: 'https://api.chatengine.io/users/',
+        //     headers: {
+        //         'PRIVATE-KEY': process.env.CHAT_ENGINE
+        //     },
+        //     data : newUser
+        // };
+        
+        // axios(config)
+        // .then(function (response) {
+        //     console.log(JSON.stringify(response.data));
+        // })
+        // .catch(function (error) {
+        //     console.log(error);
+        // });
+
+        // console.log(OTP)
 
         mailTransport.sendMail({
             from: 'noreply@gmail.com',
@@ -56,6 +74,7 @@ exports.signup = asyncErrors(async (req, res, next) => {
     })
     
 
+    
     // let options = {
     //         from: 'meetmeet4499@gmail.com',
     //         to: newUser.email,
