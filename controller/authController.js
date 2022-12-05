@@ -123,7 +123,6 @@ exports.login = asyncErrors(async(req, res, next) =>{
         //     return next(res.status(400).json({msg: 'please verify your email'}))
         // }
         
-        // console.log(req.body)
         
         //send token to client
         const token = signToken(user._id)
