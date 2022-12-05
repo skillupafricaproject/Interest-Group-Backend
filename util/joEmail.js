@@ -1,31 +1,48 @@
+require('dotenv').config()
 const  nodemailer = require('nodemailer');
 
-const sendEmail = async options =>{
-    //Create a transporter
-    const transporter = nodemailer.createTransport({
-        //service: "Gmail",
-        host: "smtp.mailtrap.io",
-        port: 2525,
-        // secure: true,
-        auth: {
-          user: process.env.SENDGRID_USERNAME,
-          pass: process.env.SENDGRID_PASSWORD
-        }
-    });
 
-    //define the email options
-    const mailOptions = {
-        from: 'Noreply <hello@gmail.com>',
-        to: options.email,
-        subject: options.subject,
-        text: options.message
-
-        //html;
+const mailTransport = nodemailer.createTransport({
+    //service: "Gmail",
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true,
+    auth: {
+      user: process.env.MT_USERNAME,
+      pass: process.env.MT_PASSWORD
+    },
+    tls: {
+        rejectUnauthorized: false
     }
+});
 
-    // Actually send the email
-    await transporter.sendMail(mailOptions);
-    //return true
-}
 
-module.exports = sendEmail;
+
+mailTransport.verify(function(error, success){
+    if(error){
+        console.log(error)
+    } else {
+        console.log('ready to take messages')
+    }
+})
+
+// //define the email options
+// const mailOptions = {
+//     from: 'Noreply <hello@gmail.com>',
+//     to: options.email,
+//     subject: options.subject,
+//     text: options.message
+
+//     //html;
+// }
+
+// // Actually send the email
+// await transporter.sendMail(mailOptions);
+
+// // const sendEmail = async options =>{
+// //     //Create a transporter
+    
+// //     //return true
+// // }
+
+module.exports = mailTransport;

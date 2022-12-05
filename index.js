@@ -13,8 +13,8 @@ const hpp = require('hpp')
 const compression = require('compression')
 const cors = require('cors')
 const socketio = require('socket.io')
-const styleMessage = require('./util/messages')
-const { userJoin, getCurrentUser } = require('./util/users')
+// const styleMessage = require('./util/messages')
+// const { userJoin, getCurrentUser } = require('./util/users')
 
 
 const app = express()
@@ -42,33 +42,33 @@ app.use(express.static(path.join(__dirname, 'public')))
 const meeters = 'Meeters'
 
 
-//run when client connects
-io.on('connection', socket =>{
-    // socket.on('joinRoom', ({username, room})=>{
-        // const user = userJoin(socket.id, username, room)
+// //run when client connects
+// io.on('connection', socket =>{
+//     // socket.on('joinRoom', ({username, room})=>{
+//         // const user = userJoin(socket.id, username, room)
 
         
-        // socket.join(user.room)
+//         // socket.join(user.room)
 
-    // })
-    //new user joining
-    socket.emit('message', styleMessage(meeters, 'welcome to MEET!'))
+//     // })
+//     //new user joining
+//     socket.emit('message', styleMessage(meeters, 'welcome to MEET!'))
 
-    //Broadcast
-    socket.broadcast.emit('message', styleMessage(meeters, `a user has joined`))
+//     //Broadcast
+//     socket.broadcast.emit('message', styleMessage(meeters, `a user has joined`))
 
 
-    //chatMessage
-    socket.on('chatMessage', msg =>{
-        io.emit('message', styleMessage('message',msg));
-    })
+//     //chatMessage
+//     socket.on('chatMessage', msg =>{
+//         io.emit('message', styleMessage('message',msg));
+//     })
 
-    //on disconnection
-    socket.on('disconnect', ()=>{
-        io.emit('message', styleMessage(meeters, 'A user had left the chat'))
-    })
+//     //on disconnection
+//     socket.on('disconnect', ()=>{
+//         io.emit('message', styleMessage(meeters, 'A user had left the chat'))
+//     })
 
-})
+// })
 
 
 

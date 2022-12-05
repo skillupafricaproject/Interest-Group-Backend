@@ -1,18 +1,18 @@
-const users = [];
+// const users = [];
 
-function userJoin(id, username, room){
-    const user = { id, username, room};
+// function userJoin(id, username, room){
+//     const user = { id, username, room};
 
-    users.push(user);
+//     users.push(user);
 
-    return user;
-}
+//     return user;
+// }
 
-function getCurrentUser(id){
-    return users.find(user => user.id === id);
-}
+// function getCurrentUser(id){
+//     return users.find(user => user.id === id);
+// }
 
-module.exports = {
-    userJoin, 
-    getCurrentUser
-}
+// module.exports = {
+//     userJoin, 
+//     getCurrentUser
+// }

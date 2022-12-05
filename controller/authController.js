@@ -2,8 +2,8 @@ const {promisify} = require('util')
 const User = require('../model/User')
 const jwt = require('jsonwebtoken')
 const VerificationToken = require('../model/verificationToken')
-const {mailTransport, genOTP, emailTemplate, plainEmailTemp} = require('../util/mail')
-const sendEmail = require('../util/joEmail')
+const {genOTP, emailTemplate, plainEmailTemp} = require('../util/mail')
+const mailTransport = require('../util/joEmail')
 const {isValidObjectId} = require('mongoose')
 const asyncErrors = require('./errorController')
 const crypto = require('crypto')
@@ -47,7 +47,7 @@ exports.signup = asyncErrors(async (req, res, next) => {
 
         console.log(OTP)
 
-        mailTransport().sendMail({
+        mailTransport.sendMail({
             from: 'noreply@gmail.com',
             to: newUser.email,
             subject: 'verify your email account',
@@ -148,7 +148,7 @@ exports.verifyEmail = asyncErrors(async(req, res, next) => {
     await VerificationToken.findByIdAndDelete(token._id)
     await user.save()
 
-    mailTransport().sendMail({
+    mailTransport.sendMail({
         from: 'noreply@email.com',
         to: user.email,
         subject: 'verify your email account',
@@ -179,10 +179,16 @@ exports.forgotPassword = asyncErrors(async (req, res, next) => {
 
     try{
 
-        await sendEmail({
-            email: user.email,
-            subject: 'your password reset token (Valid for 10 min)!',
+        await mailTransport.sendMail({
+            from: 'noreply@gmail.com',
+            to: user.email,
+            subject: 'password reset token(valid for 10 min)',
             message
+        //     sendEmail({
+        //     email: user.email,
+        //     subject: 'your password reset token (Valid for 10 min)!',
+        //     message
+        // });
         });
         
         res.status(200).json({
