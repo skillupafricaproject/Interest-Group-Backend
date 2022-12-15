@@ -144,7 +144,7 @@ exports.login = asyncErrors(async(req, res, next) =>{
 
 exports.verifyEmail = asyncErrors(async(req, res, next) => {
     const {userId, otp} = req.body
-    if(!otp.trim()) {
+    if(!otp) {
         return res.status(401).json({status:"failure", message:"invalid token"});
     }
     if(!isValidObjectId(userId)) {
