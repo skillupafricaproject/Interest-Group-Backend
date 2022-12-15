@@ -4,6 +4,8 @@ const express = require('express')
 const dotenv = require('dotenv')
 const authRouter = require('./routes/auth')
 const userRouter = require('./routes/user')
+const postRouter = require('./routes/post')
+const commentRouter = require('./routes/comment')
 const mongoose = require('mongoose')
 const rateLimit = require('express-rate-limit')
 const helmet = require('helmet')
@@ -25,6 +27,7 @@ dotenv.config()
 app.use(helmet())
 
 app.use(express.json({ limit: '10kb'}))
+app.use(express.urlencoded({ extended: true }))
 
 
 //data sanitization against NoSql query injection
@@ -96,6 +99,8 @@ app.use(hpp({
 const port = process.env.PORT || 3000
 app.use('/api/v1/meet', authRouter)
 app.use('/api/v1/meet', userRouter)
+app.use('/api/v1/meet', postRouter)
+app.use('/api/v1/meet', commentRouter)
 
 
 mongoose.connect(process.env.MONGO_URI, 

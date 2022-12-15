@@ -39,7 +39,10 @@ const userSchema = new mongoose.Schema({
         lowercase: true,
         validate: [validator.isEmail, 'please provide a valid email']
     }, 
-    photo: String,
+    avatar: {
+        public_id: String,
+        url: String,
+    },
     password: {
         type: String,
         required: [true, 'please provide a password'],
@@ -67,9 +70,35 @@ const userSchema = new mongoose.Schema({
     aboutMe: {
         type: String,
         default: ''
+    },
+    posts: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Post",
+        }
+    ],
+    followers: [
+        {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User", 
     }
+    ],
+    following:  [
+        {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User", 
+    }
+    ],
+    notifications: [],
+    groups: [],
+    posts: [],
+    active: {
+    type: Boolean,
+    default: true,
+    select: false
+  }
 },{
-    timestamps: true
+    timestamps: true 
 })
 
 //encrypt the password by using a mongoose middleware(presave middleware)

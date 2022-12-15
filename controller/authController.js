@@ -18,6 +18,15 @@ const signToken = id => {
 
 exports.signup = asyncErrors(async (req, res, next) => {
      const { email, userName } = req.body
+        
+        const userExist = await User.findOne({userName})
+        if(userExist){
+            return next(res.status(404).json({ msg:'user name already exists'}))
+        }
+        const emailExist = await User.findOne({email: req.body.email})
+        if(emailExist){
+            return next(res.status(301).json({ msg:'email already exists'}))
+        }
         const newUser = new User ({
             userName: req.body.userName,
             email: req.body.email,
@@ -29,14 +38,6 @@ exports.signup = asyncErrors(async (req, res, next) => {
         //jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
         //     expiresIn: process.env.JWT_EXPIRESIN
         // })
-        const emailExist = await User.findOne({email})
-        if(emailExist){
-            return next(res.status(404).json({ msg:'email already exists'}))
-        }
-        const userExist = await User.findOne({userName})
-        if(userExist){
-            return next(res.status(404).json({ msg:'user name already exists'}))
-        }
 
         const OTP = genOTP()
         const verificationToken = new VerificationToken({
@@ -114,7 +115,7 @@ exports.login = asyncErrors(async(req, res, next) =>{
         }
          
         //check if user exists in the database and check if password is correct
-        const user = await User.findOne({email}).select('+password')
+        const user = await User.findOne({email}).populate("followers", "following").select('+password')
         
         if(!user || !(await user.comparePassword(password, user.password))){
             return next(res.status(401).json('incorrect email or password'))
@@ -311,3 +312,11 @@ exports.updatePassword = asyncErrors(async (req, res, next) => {
     })
 })
 
+
+exports.logout = (req, res) => {
+    res.cookie('jwt', 'loggedout', {
+      expires: new Date(Date.now() + 10 * 1000),
+      httpOnly: true
+    });
+    res.status(200).json({ status: 'success' });
+  };
