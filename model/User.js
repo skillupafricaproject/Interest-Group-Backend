@@ -77,6 +77,12 @@ const userSchema = new mongoose.Schema({
             ref: "Post",
         }
     ],
+    groupOwned: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "group"
+        }
+    ],
     followers: [
         {
         type: mongoose.Schema.Types.ObjectId,

@@ -30,7 +30,7 @@ exports.createPost = asyncErrors(async(req, res)=>{
 })
 
 exports.getPost = asyncErrors(async(req, res)=>{
-   const posts = await Post.find({user: [...req.user.connections, req.user._id]}).sort("-createdAt").populate("user", "userName photo firstName lastName")
+   const posts = await Post.find({user: [...req.user.followers, req.user._id]}).sort("-createdAt").populate("user", "userName photo firstName lastName")
    .populate({
     path: "comments",
     populate: {
